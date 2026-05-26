@@ -1,0 +1,387 @@
+/* ============================================================
+   Personal academic page — clean white, Inter-based typography
+   Based on Jon Barron's table layout, restyled for modern look
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --fg: #1f2328;
+  --fg-soft: #4a5159;
+  --muted: #6e7681;
+  --bg: #ffffff;
+  --accent: #1772d0;
+  --accent-hover: #f09228;
+  --rule: #e5e7eb;
+  --highlight: #fff8c5;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body, td, th, tr, p, a, li {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--fg);
+}
+
+p {
+  margin: 0.6em 0;
+  color: var(--fg-soft);
+}
+
+strong { font-weight: 600; color: var(--fg); }
+em     { font-style: italic; color: var(--fg-soft); }
+
+/* ---------- Links ---------- */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color .15s ease, border-color .15s ease;
+}
+a:hover, a:focus {
+  color: var(--accent-hover);
+  border-bottom-color: var(--accent-hover);
+}
+
+/* ---------- Headings ---------- */
+h2 {
+  margin: 0 0 12px 0;
+  padding: 0 0 8px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* ---------- Name (top of page) ---------- */
+.name {
+  padding-top: 8px;
+  margin: 0 0 8px 0;
+  font-family: 'Newsreader', 'Inter', serif;
+  font-size: 38px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.subtitle {
+  margin: 0 0 14px 0;
+  font-size: 15px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* ---------- Page header (name + nav inline) ---------- */
+.page-header {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 28px 2.5% 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.page-header .name {
+  margin: 0;
+  padding: 0;
+}
+
+.topnav {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.topnav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fg-soft);
+  border-bottom: none;
+}
+.topnav a:hover { color: var(--accent); }
+@media (max-width: 600px) {
+  .page-header { gap: 8px; }
+  .topnav { gap: 12px; }
+  .topnav a { font-size: 13px; }
+}
+
+/* ---------- Header link row (text style) ---------- */
+.links-text {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 14px;
+}
+.links-text a { font-weight: 500; }
+.links-text .sep { color: var(--muted); margin: 0 6px; }
+
+/* ---------- Icon-only round buttons (used in Contact) ---------- */
+.icon-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.icon-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  color: var(--fg-soft);
+  transition: color .15s ease, border-color .15s ease, background .15s ease, transform .15s ease;
+}
+.icon-links a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(23,114,208,0.06);
+  transform: translateY(-1px);
+}
+.icon-links a svg { width: 18px; height: 18px; }
+
+/* ---------- News & Education lists ---------- */
+ul.clean {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0;
+}
+ul.clean li {
+  padding: 6px 0;
+  color: var(--fg-soft);
+}
+ul.clean li .date {
+  display: inline-block;
+  min-width: 78px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* ---------- Publications ---------- */
+.papertitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+}
+a .papertitle { color: var(--accent); }
+a:hover .papertitle { color: var(--accent-hover); }
+
+.one {
+  width: 160px;
+  height: 160px;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.two {
+  width: 160px;
+  height: 160px;
+  position: absolute;
+  transition: opacity .25s ease-in-out;
+}
+.fade { transition: opacity .25s ease-in-out; }
+
+span.highlight {
+  background-color: var(--highlight);
+  padding: 0 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Publication buttons (project page / arXiv / code) ---------- */
+.pub-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.pub-buttons a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--fg-soft);
+  background: #f6f8fa;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  transition: color .15s ease, border-color .15s ease, background .15s ease;
+}
+.pub-buttons a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(23,114,208,0.08);
+}
+.pub-buttons svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* ---------- Timeline (Education / Experience) ---------- */
+ul.timeline {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0 0;
+  position: relative;
+}
+ul.timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--rule);
+}
+ul.timeline > li {
+  position: relative;
+  padding: 6px 0 18px 32px;
+}
+ul.timeline > li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--accent);
+  box-shadow: 0 0 0 3px #ffffff;
+}
+ul.timeline > li:last-child { padding-bottom: 4px; }
+
+.tl-date {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.tl-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 0;
+}
+.tl-place {
+  font-style: italic;
+  color: var(--fg-soft);
+  font-size: 14px;
+  margin: 2px 0 0 0;
+}
+.tl-meta {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 4px 0 0 0;
+}
+ul.timeline ul {
+  margin: 6px 0 0 0;
+  padding-left: 18px;
+  color: var(--fg-soft);
+}
+ul.timeline ul li { padding: 2px 0; font-size: 14px; }
+
+/* ---------- Split (two-column) section ---------- */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  padding: 16px;
+}
+.split > div { min-width: 0; }
+.split h2 { margin-bottom: 14px; }
+.split ul.timeline > li { padding-bottom: 16px; }
+.split ul.timeline > li:last-child { padding-bottom: 0; }
+@media (max-width: 720px) {
+  .split { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* ---------- Contact ---------- */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-top: 8px;
+}
+@media (max-width: 720px) {
+  .contact-grid { grid-template-columns: 1fr; }
+}
+.contact-map iframe {
+  width: 100%;
+  height: 280px;
+  border: 0;
+  border-radius: 8px;
+  filter: grayscale(0.25) contrast(0.95);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+}
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--fg-soft);
+  font-size: 14px;
+}
+.contact-list svg {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+.contact-list a { font-weight: 500; }
+
+/* ---------- Profile photo ---------- */
+.profile-photo {
+  width: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  text-align: right;
+  font-size: 12px;
+  color: var(--muted);
+  padding: 32px 0 24px;
+}
+.footer a { color: var(--muted); }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+  .name { font-size: 30px; }
+  body, td, th, tr, p, a, li { font-size: 14px; }
+  .topnav a { margin: 0 6px; font-size: 13px; }
+  .one, .two { width: 110px; height: 110px; }
+}
