@@ -84,54 +84,91 @@
             </tr>
           </tbody></table>
 
-          <table style="width:100%;border:0px;border-spacing:0px 14px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-
-            <!-- ===== DyMoS ===== -->
-            <tr>
-              <td style="padding:16px;width:20%;vertical-align:middle">
-                <img src='images/dymos_teaser.gif' alt="DyMoS teaser (baseline vs ours, shuttle)" style="width:100%; height:auto; display:block; border-radius:6px;">
-              </td>
-              <td style="padding:8px;width:80%;vertical-align:middle">
-                <a href="https://sh0xed98b8.github.io/DyMoS/">
-                  <span class="papertitle">Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models</span>
-                </a>
-                <br>
-                Wooseok Jeon*, <strong>Seungho Park*</strong>, Seunghyun Shin, Sangeyl Lee, Hyeonho Jeong, Hae-Gon Jeon
-                <br>
-                <em>arXiv</em>, 2026
-                <div class="pub-buttons">
-                  <a href="https://sh0xed98b8.github.io/DyMoS/">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                    Project Page
-                  </a>
-                  <a href="https://arxiv.org/abs/2605.19398">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
-                    arXiv
-                  </a>
-                  <a href="https://github.com/sh0xed98b8/DyMoS">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                    Code
-                  </a>
+          <!-- ===== DyMoS — interactive widget (single boy_mud comparison) ===== -->
+          <div class="pub-row">
+            <div class="pub-thumb">
+              <div class="pub-interactive">
+                <div class="flip-card-wrap">
+                  <div class="flip-card" id="dymosFlipCard">
+                    <!-- FRONT: single baseline↔DyMoS slider (boy_mud) -->
+                    <div class="flip-face flip-front">
+                      <div class="compare-grid"
+                           data-cells='[
+                             {"base":"DyMoS/assets/videos/dynamic/fig4_02_boy_mud/base.mp4","ours":"DyMoS/assets/videos/dynamic/fig4_02_boy_mud/ours.mp4"}
+                           ]'></div>
+                      <button class="pub-flip-btn" data-flip-target="dymosFlipCard" title="Switch to continuous control">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                      </button>
+                      <div class="widget-foot">
+                        <span>Baseline</span><span class="grid-axis-arrow"></span><span>DyMoS</span>
+                      </div>
+                    </div>
+                    <!-- BACK: single whitehorse + 4-step Static↔Dynamic slider -->
+                    <div class="flip-face flip-back">
+                      <div class="sd-stage"
+                           data-videos='[
+                             "DyMoS/assets/videos/teaser/continuous/whitehorse/g-2.0.mp4",
+                             "DyMoS/assets/videos/teaser/continuous/whitehorse/g-1.0.mp4",
+                             "DyMoS/assets/videos/teaser/continuous/whitehorse/g0.6.mp4",
+                             "DyMoS/assets/videos/teaser/continuous/whitehorse/g+1.0.mp4"
+                           ]'></div>
+                      <button class="pub-flip-btn" data-flip-target="dymosFlipCard" title="Back to comparison">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                      </button>
+                      <div class="widget-foot sd-foot">
+                        <span class="sd-axis-label static">Static</span>
+                        <div class="sd-slot-wrap">
+                          <input type="range" class="sd-slider" min="0" max="3" step="1" value="0">
+                          <div class="sd-ticks"></div>
+                        </div>
+                        <span class="sd-axis-label dynamic">Dynamic</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </td>
-            </tr>
-
-            <!-- ===== V.I.P. ===== -->
-            <tr>
-              <td style="padding:16px;width:20%;vertical-align:middle">
-                <img src='images/vip_teaser.png' alt="V.I.P. teaser figure" style="width:100%; height:auto; display:block; border-radius:6px;">
-              </td>
-              <td style="padding:8px;width:80%;vertical-align:middle">
-                <a href="https://jiiiisoo.github.io/VIP.github.io/">
-                  <span class="papertitle">V.I.P.: Iterative Online Preference Distillation for Efficient Video Diffusion Models</span>
+              </div>
+            </div>
+            <div>
+              <a href="https://sh0xed98b8.github.io/DyMoS/">
+                <span class="papertitle">Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models</span>
+              </a>
+              <br>
+              Wooseok Jeon*, <strong>Seungho Park*</strong>, Seunghyun Shin, Sangeyl Lee, Hyeonho Jeong, Hae-Gon Jeon
+              <br>
+              <em>arXiv</em>, 2026
+              <div class="pub-buttons">
+                <a href="https://sh0xed98b8.github.io/DyMoS/">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                  Project Page
                 </a>
-                <br>
-                Jisoo Kim, Wooseok Seo, Junwan Kim, <strong>Seungho Park</strong>, Sooyeon Park, Youngjae Yu
-                <br>
-                <em>ICCV</em>, 2025
-                <div class="pub-buttons">
-                  <a href="https://jiiiisoo.github.io/VIP.github.io/">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                <a href="https://arxiv.org/abs/2605.19398">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8M16 17H8M10 9H8"/></svg>
+                  arXiv
+                </a>
+                <a href="https://github.com/sh0xed98b8/DyMoS">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                  Code
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== V.I.P. ===== -->
+          <div class="pub-row">
+            <div class="pub-thumb">
+              <img src='images/vip_teaser.png' alt="V.I.P. teaser figure">
+            </div>
+            <div>
+              <a href="https://jiiiisoo.github.io/VIP.github.io/">
+                <span class="papertitle">V.I.P.: Iterative Online Preference Distillation for Efficient Video Diffusion Models</span>
+              </a>
+              <br>
+              Jisoo Kim, Wooseok Seo, Junwan Kim, <strong>Seungho Park</strong>, Sooyeon Park, Youngjae Yu
+              <br>
+              <em>ICCV</em>, 2025
+              <div class="pub-buttons">
+                <a href="https://jiiiisoo.github.io/VIP.github.io/">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     Project Page
                   </a>
                   <a href="https://arxiv.org/abs/2508.03254">
@@ -139,10 +176,8 @@
                     arXiv
                   </a>
                 </div>
-              </td>
-            </tr>
-
-          </tbody></table>
+            </div>
+          </div>
 
           <!-- ============== EDUCATION + RESEARCH EXPERIENCE (side by side) ============== -->
           <div id="experience" class="split">
@@ -238,5 +273,96 @@
         </td>
       </tr>
     </tbody></table>
+<script>
+(function () {
+  // ---------- Flip card toggle ----------
+  document.querySelectorAll('.pub-flip-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = document.getElementById(btn.dataset.flipTarget);
+      if (target) target.classList.toggle('flipped');
+    });
+  });
+
+  // ---------- Build baseline ↔ ours comparison cells ----------
+  document.querySelectorAll('.compare-grid').forEach(grid => {
+    let cells;
+    try { cells = JSON.parse(grid.dataset.cells); }
+    catch (e) { console.error('bad cells JSON', e); return; }
+    grid.innerHTML = '';
+    cells.forEach(c => {
+      const cell = document.createElement('div');
+      cell.className = 'compare-cell';
+      cell.innerHTML = `
+        <video class="layer-base" src="${c.base}" autoplay muted loop playsinline preload="auto"></video>
+        <video class="layer-ours" src="${c.ours}" autoplay muted loop playsinline preload="auto"></video>
+        <div class="cell-handle"></div>
+      `;
+      const ours   = cell.querySelector('.layer-ours');
+      const handle = cell.querySelector('.cell-handle');
+      const base   = cell.querySelector('.layer-base');
+
+      // Keep the two videos in sync
+      base.addEventListener('loadedmetadata', () => { try { ours.currentTime = base.currentTime; } catch(_){} });
+      base.addEventListener('seeked',          () => { try { ours.currentTime = base.currentTime; } catch(_){} });
+
+      let dragging = false;
+      const updateFromX = (clientX) => {
+        const rect = cell.getBoundingClientRect();
+        const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+        const pct = (x / rect.width) * 100;
+        handle.style.left = pct + '%';
+        ours.style.clipPath = `inset(0 0 0 ${pct}%)`;
+      };
+      cell.addEventListener('pointerdown', e => {
+        dragging = true;
+        cell.setPointerCapture(e.pointerId);
+        updateFromX(e.clientX);
+      });
+      cell.addEventListener('pointermove', e => { if (dragging) updateFromX(e.clientX); });
+      cell.addEventListener('pointerup',   e => {
+        dragging = false;
+        try { cell.releasePointerCapture(e.pointerId); } catch(_){}
+      });
+      cell.addEventListener('pointercancel', () => { dragging = false; });
+      grid.appendChild(cell);
+    });
+  });
+
+  // ---------- Static ↔ Dynamic single pane + 4-step slider ----------
+  document.querySelectorAll('.sd-stage').forEach(stage => {
+    let videos;
+    try { videos = JSON.parse(stage.dataset.videos); }
+    catch (e) { console.error('bad sd-stage videos JSON', e); return; }
+    stage.innerHTML = '';
+    const vidEls = videos.map((src, i) => {
+      const v = document.createElement('video');
+      v.src = src;
+      v.muted = true; v.loop = true; v.autoplay = true;
+      v.playsInline = true; v.preload = 'auto';
+      if (i === 0) v.classList.add('active');
+      stage.appendChild(v);
+      return v;
+    });
+    // Sync time across videos
+    const master = vidEls[0];
+    master.addEventListener('timeupdate', () => {
+      vidEls.slice(1).forEach(v => {
+        if (Math.abs(v.currentTime - master.currentTime) > 0.2) {
+          try { v.currentTime = master.currentTime; } catch (_) {}
+        }
+      });
+    });
+    // Slider snaps to integer 0..n-1
+    const slider = stage.parentNode.querySelector('.sd-slider');
+    if (!slider) return;
+    slider.max = String(vidEls.length - 1);
+    slider.addEventListener('input', () => {
+      const idx = Math.max(0, Math.min(vidEls.length - 1, parseInt(slider.value, 10)));
+      vidEls.forEach((v, i) => v.classList.toggle('active', i === idx));
+    });
+  });
+})();
+</script>
+
   </body>
 </html>
