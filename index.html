@@ -5,7 +5,7 @@
     <title>Seungho Park</title>
     <meta name="author" content="Seungho Park">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css?v=20260527a">
   </head>
 
   <body>
@@ -275,6 +275,28 @@
     </tbody></table>
 <script>
 (function () {
+  // ---------- Sync groups (wait for all videos to be ready, then play together) ----------
+  function makeSyncGroup() {
+    return { videos: [], started: false };
+  }
+  function addToSync(group, v) {
+    group.videos.push(v);
+    const onReady = () => {
+      v.removeEventListener('canplay', onReady);
+      tryPlay(group);
+    };
+    if (v.readyState >= 3) tryPlay(group);
+    else v.addEventListener('canplay', onReady);
+  }
+  function tryPlay(group) {
+    if (group.started) return;
+    if (!group.videos.every(v => v.readyState >= 3)) return;
+    group.started = true;
+    // Reset all to start, then play simultaneously
+    group.videos.forEach(v => { try { v.currentTime = 0; } catch (_) {} });
+    group.videos.forEach(v => { v.play().catch(() => {}); });
+  }
+
   // ---------- Flip card toggle ----------
   document.querySelectorAll('.pub-flip-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -289,21 +311,20 @@
     try { cells = JSON.parse(grid.dataset.cells); }
     catch (e) { console.error('bad cells JSON', e); return; }
     grid.innerHTML = '';
+    const group = makeSyncGroup();
     cells.forEach(c => {
       const cell = document.createElement('div');
       cell.className = 'compare-cell';
       cell.innerHTML = `
-        <video class="layer-base" src="${c.base}" autoplay muted loop playsinline preload="auto"></video>
-        <video class="layer-ours" src="${c.ours}" autoplay muted loop playsinline preload="auto"></video>
+        <video class="layer-base" src="${c.base}" muted loop playsinline preload="auto"></video>
+        <video class="layer-ours" src="${c.ours}" muted loop playsinline preload="auto"></video>
         <div class="cell-handle"></div>
       `;
       const ours   = cell.querySelector('.layer-ours');
       const handle = cell.querySelector('.cell-handle');
       const base   = cell.querySelector('.layer-base');
-
-      // Keep the two videos in sync
-      base.addEventListener('loadedmetadata', () => { try { ours.currentTime = base.currentTime; } catch(_){} });
-      base.addEventListener('seeked',          () => { try { ours.currentTime = base.currentTime; } catch(_){} });
+      addToSync(group, base);
+      addToSync(group, ours);
 
       let dragging = false;
       const updateFromX = (clientX) => {
@@ -334,23 +355,16 @@
     try { videos = JSON.parse(stage.dataset.videos); }
     catch (e) { console.error('bad sd-stage videos JSON', e); return; }
     stage.innerHTML = '';
+    const group = makeSyncGroup();
     const vidEls = videos.map((src, i) => {
       const v = document.createElement('video');
       v.src = src;
-      v.muted = true; v.loop = true; v.autoplay = true;
+      v.muted = true; v.loop = true;
       v.playsInline = true; v.preload = 'auto';
       if (i === 0) v.classList.add('active');
       stage.appendChild(v);
+      addToSync(group, v);
       return v;
-    });
-    // Sync time across videos
-    const master = vidEls[0];
-    master.addEventListener('timeupdate', () => {
-      vidEls.slice(1).forEach(v => {
-        if (Math.abs(v.currentTime - master.currentTime) > 0.2) {
-          try { v.currentTime = master.currentTime; } catch (_) {}
-        }
-      });
     });
     // Slider snaps to integer 0..n-1
     const slider = stage.parentNode.querySelector('.sd-slider');
