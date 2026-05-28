@@ -149,29 +149,21 @@
         <div class="container is-max-desktop">
           <div class="columns is-centered">
             <div class="column is-four-fifths">
-              <h2 class="title is-3 has-text-centered">Overview</h2>
+              <h2 class="title is-3 has-text-centered">Abstract</h2>
               <div class="content has-text-justified">
                 <p>
-                  Image-to-video (I2V) models often generate videos that remain overly static, compared
-                  to text-to-video (T2V) models. While prior approaches mitigate this issue by weakening
-                  or modifying the image-conditioning signal, they often require additional training or
-                  sacrifice fidelity to the reference image.
+                  Image-to-video models often generate videos that remain overly static, compared to text-to-video models. 
+                  While prior approaches mitigate this issue by weakening or modifying the image-conditioning signal, 
+                  they often require additional training or sacrifice fidelity to the reference image. 
+                  In this work, we identify reference-frame dominance as a key mechanism behind motion suppression. 
+                  We observe that non-reference frames in I2V models allocate excessive self-attention to reference-frame key tokens, 
+                  causing reference information to be over-propagated across time and suppressing inter-frame dynamics. 
+                  Based on this finding, we propose DyMoS (Dynamic Motion Slider), a training-free and model-agnostic method 
+                  that rebalances the attention pathway from generated frames to the reference frame during initial denoising steps. 
+                  DyMoS leaves both the input image and model weights unchanged and introduces a single scalar parameter for continuous control over motion strength. 
+                  Experiments across multiple state-of-the-art I2V backbones demonstrate that DyMoS consistently improves motion dynamics 
+                  while maintaining visual quality and fidelity to the reference image.
                 </p>
-                <p>
-                  We identify <em>reference-frame dominance</em> in self-attention &mdash; the tendency
-                  of non-reference frames to over-attend to the reference frame &mdash; as the mechanism
-                  behind motion suppression. We propose <strong>DyMoS</strong> (Dynamic Motion Slider),
-                  a training-free and model-agnostic method that rebalances the attention pathway from
-                  generated frames to the reference frame during the initial denoising steps. DyMoS
-                  preserves image fidelity while enabling continuous control over motion strength
-                  through a single scalar parameter.
-                </p>
-              </div>
-
-              <div class="figure-bullets">
-                <div><span class="check">&#10003;</span> <b>Training-free</b> &mdash; no model parameters touched</div>
-                <div><span class="check">&#10003;</span> <b>Model-agnostic</b> &mdash; applies to off-the-shelf I2V backbones</div>
-                <div><span class="check">&#10003;</span> <b>Continuous control</b> &mdash; a single scalar slides motion strength</div>
               </div>
             </div>
           </div>
