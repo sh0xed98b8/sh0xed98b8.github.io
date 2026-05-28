@@ -85,7 +85,6 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  border-radius: var(--border-radius);
 }
 .teaser-carousel-track {
   display: flex;
@@ -158,7 +157,7 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   background: #000;
-  border-radius: var(--border-radius);
+  border-radius: 0;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
@@ -169,6 +168,10 @@
 .cell-label {
   margin-top: 0.4rem; text-align: center;
   font-size: 0.88rem; font-weight: 600; color: var(--text-secondary);
+}
+.cell-label-ours {
+  color: var(--primary-color);
+  font-weight: 700;
 }
 
 .method-compare {
@@ -232,7 +235,7 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   background: #000;
-  border-radius: var(--border-radius);
+  border-radius: 0;
   overflow: hidden;
 }
 .video-stack video {
@@ -251,6 +254,7 @@
 .slider-row {
   display: flex; align-items: center; gap: 1.25rem;
   margin-top: 0.75rem;
+  margin-bottom: 1.75rem;
 }
 .end-label {
   flex: 0 0 auto;
@@ -290,24 +294,31 @@
   width: var(--thumb-size); height: var(--thumb-size);
   margin-top: -5px;
   border-radius: 50%; background: #fff;
-  border: 3px solid var(--primary-color);
+  border: 3px solid #facc15;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 2px 8px rgba(234, 179, 8, 0.45);
   transition: var(--transition);
 }
 .slider-input::-webkit-slider-thumb:hover {
   transform: scale(1.15);
-  border-color: var(--primary-hover);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.5);
+  border-color: #eab308;
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.6);
 }
 .slider-input::-moz-range-thumb {
   width: var(--thumb-size); height: var(--thumb-size);
   border-radius: 50%; background: #fff;
-  border: 3px solid var(--primary-color); cursor: pointer;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+  border: 3px solid #facc15; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(234, 179, 8, 0.45);
 }
 
-.tick-row { position: relative; width: 100%; height: 1rem; margin-top: 0.35rem; }
+.tick-row {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  height: 1rem;
+  pointer-events: none;
+}
 .tick {
   position: absolute; top: 0; transform: translateX(-50%);
   font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;

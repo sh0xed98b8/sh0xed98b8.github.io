@@ -340,9 +340,10 @@
         var label = k === 'base' ? 'Base' : k === 'alg' ? 'ALG' : 'Ours';
         var v = makeVideo(it.files[k], { autoplay: false, preload: 'auto' });
         addToSyncGroup(groupId, v);
+        var labelClass = 'cell-label' + (k === 'ours' ? ' cell-label-ours' : '');
         var col = el('div', { class: 'compare-col' }, [
           el('div', { class: 'video-cell' }, [v]),
-          el('div', { class: 'cell-label' }, label),
+          el('div', { class: labelClass }, label),
         ]);
         grid.appendChild(col);
       });
