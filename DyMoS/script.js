@@ -349,7 +349,6 @@
       fig.appendChild(grid);
 
       var captionChildren = [];
-      captionChildren.push(el('div', { class: 'cap-line cap-title' }, it.label));
       captionChildren.push(metaBadges([
         'Model: ' + it.model,
         'Dataset: ' + it.dataset + (it.vid ? ' ' + it.vid : ''),
@@ -388,10 +387,6 @@
     slider.appendChild(stack);
 
     var captionChildren = [];
-    captionChildren.push(metaBadges([
-      'Model: ' + item.model,
-      'Dataset: ' + item.dataset,
-    ]));
     if (item.prompt) {
       captionChildren.push(el('div', { class: 'cap-line cap-prompt' }, [
         el('span', { class: 'prompt-label' }, 'Prompt:'),
@@ -399,17 +394,13 @@
         el('span', { class: 'prompt-text' }, '“' + item.prompt + '”'),
       ]));
     }
-    slider.appendChild(el('div', { class: 'slider-caption' }, captionChildren));
-
-    var valueLabel = el('span', { class: 'value-label' }, steps[defaultIdx].label);
-    slider.appendChild(el('div', { class: 'slider-header' }, [
-      el('span', { class: 'param-name' }, 'Guidance setting'),
-      valueLabel,
-    ]));
+    if (captionChildren.length) {
+      slider.appendChild(el('div', { class: 'slider-caption' }, captionChildren));
+    }
 
     var input = el('input', {
       type: 'range', min: 0, max: n - 1, step: 1, value: defaultIdx,
-      class: 'slider-input', 'aria-label': 'Guidance setting',
+      class: 'slider-input', 'aria-label': 'Motion strength',
     });
     var tickRow = el('div', { class: 'tick-row' });
     steps.forEach(function (s, i) {
@@ -419,9 +410,9 @@
     });
     var trackWrap = el('div', { class: 'slider-track-wrapper' }, [input, tickRow]);
     slider.appendChild(el('div', { class: 'slider-row' }, [
-      el('span', { class: 'end-label' }, 'Lower'),
+      el('span', { class: 'end-label end-label-static' }, 'Static'),
       trackWrap,
-      el('span', { class: 'end-label' }, 'Higher'),
+      el('span', { class: 'end-label end-label-dynamic' }, 'Dynamic'),
     ]));
 
     var currentIdx = defaultIdx;
@@ -437,7 +428,6 @@
       var p = next.play();
       if (p && typeof p.catch === 'function') p.catch(function () {});
       currentIdx = newIdx;
-      valueLabel.textContent = steps[newIdx].label;
     });
 
     return slider;
@@ -463,37 +453,6 @@
 
     initObserver();
     observeAllVideos(document);
-
-    var copyBtn = document.getElementById('copy-bibtex-btn');
-    var bibCode = document.getElementById('bibtex-code');
-    if (copyBtn && bibCode) {
-      copyBtn.addEventListener('click', function () {
-        var text = bibCode.innerText;
-        var done = function () {
-          var label = copyBtn.querySelector('.copy-text');
-          if (!label) return;
-          var prev = label.textContent;
-          label.textContent = 'Copied';
-          copyBtn.classList.add('is-copied');
-          setTimeout(function () {
-            label.textContent = prev;
-            copyBtn.classList.remove('is-copied');
-          }, 1500);
-        };
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(done, function () {});
-        } else {
-          var ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.position = 'fixed';
-          ta.style.opacity = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          try { document.execCommand('copy'); done(); } catch (_) {}
-          document.body.removeChild(ta);
-        }
-      });
-    }
 
     var n = document.querySelectorAll('video').length;
     if (n === 0) diag('No <video> elements rendered. Check data.js content.');

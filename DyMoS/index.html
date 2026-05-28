@@ -1,128 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models</title>
-  <meta name="description" content="DyMoS: Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models" />
-  <link rel="icon" href="data:," />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>DyMoS | Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models</title>
+  <meta name="title" content="Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models">
+  <meta name="description" content="DyMoS: a training-free, model-agnostic method that rebalances self-attention to reduce reference-frame dominance in I2V diffusion models, enabling continuous control over motion strength.">
+  <meta name="author" content="Wooseok Jeon, Seungho Park, Seunghyun Shin, Sangeyl Lee, Hyeonho Jeong, Hae-Gon Jeon">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models">
+  <meta property="og:description" content="DyMoS: training-free method that rebalances self-attention to enable continuous control over motion strength in I2V diffusion models.">
+
+  <link rel="icon" href="data:,">
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- CSS (MPD template stack) -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="static/css/fontawesome.all.min.css"></noscript>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- DyMoS component overrides (carousel / video grid / slider) -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- JS -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
 </head>
+
 <body>
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
 
-  <header class="page-header">
-    <h1 class="title">Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models</h1>
+  <main id="main-content">
+    <!-- Header -->
+    <section class="hero publication-header">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title" style="font-size:44px;">
+                Rebalancing Reference Frame Dominance to<br>Improve Motion in Image-to-Video Models
+              </h1>
 
-    <div class="authors">
-      <div class="author-block"><div class="author-name"><a href=https://vvsjeon.github.io>Wooseok Jeon</a><sup>1*</sup></div></div>
-      <div class="author-block"><div class="author-name"><a href=https://sh0xed98b8.github.io>Seungho Park</a><sup>1*</sup></div></div>
-      <div class="author-block"><div class="author-name"><a href=https://www.seunghyunshin.com>Seunghyun Shin</a><sup>2</sup></div></div>
-      <div class="author-block"><div class="author-name"><a href=https://scholar.google.com/citations?user=gA4sNvcAAAAJ&hl=ko&oi=ao>Sangeyl Lee</a><sup>1</sup></div></div>
-      <div class="author-block"><div class="author-name"><a href=https://hyeonho99.github.io>Hyeonho Jeong</a><sup>3</sup></div></div>
-      <div class="author-block"><div class="author-name"><a href=https://sites.google.com/site/hgjeoncv/home>Hae-Gon Jeon</a><sup>1</sup></div></div>
-    </div>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://vvsjeon.github.io" target="_blank" rel="noopener">Wooseok Jeon</a><sup>1*</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://sh0xed98b8.github.io" target="_blank" rel="noopener">Seungho Park</a><sup>1*</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://www.seunghyunshin.com" target="_blank" rel="noopener">Seunghyun Shin</a><sup>2</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=gA4sNvcAAAAJ" target="_blank" rel="noopener">Sangeyl Lee</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://hyeonho99.github.io" target="_blank" rel="noopener">Hyeonho Jeong</a><sup>3</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://sites.google.com/site/hgjeoncv/home" target="_blank" rel="noopener">Hae-Gon Jeon</a><sup>1</sup>
+                </span>
+              </div>
 
-    <div class="affiliations">
-      <span><sup>1</sup>Yonsei University</span>
-      <span><sup>2</sup>GIST</span>
-      <span><sup>3</sup>Adobe Research</span>
-    </div>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <sup>1</sup>Yonsei University &nbsp; <sup>2</sup>GIST &nbsp; <sup>3</sup>Adobe Research
+                </span>
+              </div>
+              <div class="eql-cntrb">
+                <sup>*</sup>Equal contribution
+              </div>
 
-    <div class="author-notes">
-      <sup>*</sup>Equal contribution. &nbsp;&nbsp
-    </div>
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a href="https://arxiv.org/abs/2605.19398" target="_blank" rel="noopener"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                      <span>arXiv</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="https://github.com/sh0xed98b8/DyMoS" target="_blank" rel="noopener"
+                       class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fab fa-github"></i></span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
 
-    <div class="links">
-      <a class="link-btn" href="https://arxiv.org/abs/2605.19398" target="_blank" rel="noopener">
-        <span class="icon" aria-hidden="true">
-          <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
-        </span>
-        arXiv
-      </a>
-      <a class="link-btn" href="https://github.com/sh0xed98b8/DyMoS" target="_blank" rel="noopener">
-        <span class="icon" aria-hidden="true">
-          <svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12.02c0 5.1 3.29 9.42 7.86 10.96.58.1.79-.25.79-.55v-2.1c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.77.11 3.06.74.81 1.18 1.84 1.18 3.1 0 4.43-2.69 5.41-5.26 5.69.41.36.78 1.06.78 2.14v3.18c0 .31.21.66.8.55 4.56-1.54 7.85-5.86 7.85-10.96C23.5 5.65 18.35.5 12 .5z"/></svg>
-        </span>
-        Code
-      </a>
-    </div>
-
-  </header>
-
-  <section id="teaser-section" class="wide">
-    <div id="teaser-container"></div>
-  </section>
-
-  <main class="content">
-
-    <!-- Abstract -->
-    <section class="abstract section-card">
-      <h2>Overview</h2>
-      <div class="grid-2">
-        <div class="card">
-          <h3 class="card-title">Problem</h3>
-          <p>
-            Image-to-video (I2V) models often generate videos that remain overly
-            static, compared to text-to-video (T2V) models. While prior approaches
-            mitigate this issue by weakening or modifying the image-conditioning
-            signal, they often require additional training or sacrifice fidelity
-            to the reference image.
-          </p>
-        </div>
-        <div class="card">
-          <h3 class="card-title">Our approach</h3>
-          <p>
-            We identify <em class="term">reference-frame dominance</em> in
-            self-attention — the tendency of non-reference frames to over-attend
-            to the reference frame — as the mechanism behind motion suppression.
-            We propose <strong>DyMoS</strong> (Dynamic Motion Slider), a
-            training-free and model-agnostic method that rebalances the attention
-            pathway from generated frames to the reference frame during the
-            initial denoising steps.
-          </p>
+            </div>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="bullets-row">
-        <div class="bullet"><span class="bullet-check">&#10003;</span> <b>Training-free</b> — no model parameters touched</div>
-        <div class="bullet"><span class="bullet-check">&#10003;</span> <b>Model-agnostic</b> — applies to off-the-shelf I2V backbones</div>
-        <div class="bullet"><span class="bullet-check">&#10003;</span> <b>Continuous control</b> — a single scalar slides motion strength</div>
+    <!-- Teaser -->
+    <section class="hero teaser">
+      <div class="hero-body">
+        <div class="container is-max-widescreen">
+          <div id="teaser-container"></div>
+        </div>
       </div>
     </section>
 
-    <section id="dynamic-section" class="section-card">
-      <h2>Baseline Comparisons</h2>
-      <p class="section-lead">
-        For each example we compare <strong>Base</strong>, <strong>ALG</strong>,
-        and <strong>Ours</strong> on the same image condition.
-      </p>
-      <div id="dynamic-container"></div>
-    </section>
+    <!-- Abstract / Overview -->
+    <section class="section hero is-light">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column is-four-fifths">
+              <h2 class="title is-3 has-text-centered">Overview</h2>
+              <div class="content has-text-justified">
+                <p>
+                  Image-to-video (I2V) models often generate videos that remain overly static, compared
+                  to text-to-video (T2V) models. While prior approaches mitigate this issue by weakening
+                  or modifying the image-conditioning signal, they often require additional training or
+                  sacrifice fidelity to the reference image.
+                </p>
+                <p>
+                  We identify <em>reference-frame dominance</em> in self-attention &mdash; the tendency
+                  of non-reference frames to over-attend to the reference frame &mdash; as the mechanism
+                  behind motion suppression. We propose <strong>DyMoS</strong> (Dynamic Motion Slider),
+                  a training-free and model-agnostic method that rebalances the attention pathway from
+                  generated frames to the reference frame during the initial denoising steps. DyMoS
+                  preserves image fidelity while enabling continuous control over motion strength
+                  through a single scalar parameter.
+                </p>
+              </div>
 
-    <section id="continuous-section" class="section-card">
-      <h2>Applications: Continuous Control over motion dynamics</h2>
-      <p class="section-lead">
-        Drag the slider to vary the guidance setting.
-      </p>
-      <div id="continuous-container"></div>
-    </section>
-
-    <section id="bibtex-section" class="section-card">
-      <div class="bibtex-header">
-        <h2>BibTeX</h2>
-        <button class="copy-bibtex-btn" type="button" id="copy-bibtex-btn" title="Copy BibTeX to clipboard">
-          <span class="copy-text">Copy</span>
-        </button>
+              <div class="figure-bullets">
+                <div><span class="check">&#10003;</span> <b>Training-free</b> &mdash; no model parameters touched</div>
+                <div><span class="check">&#10003;</span> <b>Model-agnostic</b> &mdash; applies to off-the-shelf I2V backbones</div>
+                <div><span class="check">&#10003;</span> <b>Continuous control</b> &mdash; a single scalar slides motion strength</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-@article{jeon2026rebalancing,
+    </section>
+
+    <!-- Baseline Comparisons -->
+    <section class="section">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <h2 class="title is-3 has-text-centered">Baseline Comparisons</h2>
+            <p class="has-text-centered" style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            </p>
+            <div id="dynamic-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Continuous Control -->
+    <section class="section hero is-light">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column is-full">
+              <h2 class="title is-3 has-text-centered">Applications: Continuous Control over Motion Dynamics</h2>
+              <p class="has-text-centered" style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                Drag the slider to control motion dynamics!
+              </p>
+              <div id="continuous-container"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BibTeX -->
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+            <i class="fas fa-copy"></i>
+            <span class="copy-text">Copy</span>
+          </button>
+        </div>
+<pre id="bibtex-code"><code>@article{jeon2026rebalancing,
   title={Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models},
   author={Jeon, Wooseok and Park, Seungho and Shin, Seunghyun and Lee, Sangeyl and Jeong, Hyeonho and Jeon, Hae-Gon},
   journal={arXiv preprint arXiv:2605.19398},
   year={2026}
-}
+}</code></pre>
+      </div>
     </section>
 
   </main>
