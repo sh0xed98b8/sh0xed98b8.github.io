@@ -288,8 +288,18 @@
 }
 
 /* === Continuous slider section === */
+#continuous-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+@media (max-width: 900px) {
+  #continuous-container { grid-template-columns: 1fr; }
+}
+
 .video-slider {
-  margin: 1.25rem 0 1.75rem;
+  margin: 0;
   padding: 1.25rem 1.25rem 1.4rem;
   background: var(--background-primary);
   border: 1px solid var(--border-color);
@@ -299,9 +309,9 @@
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+  min-width: 0;
 }
 .video-slider:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-.video-slider:first-of-type { margin-top: 0.5rem; }
 
 .video-stack {
   position: relative;
@@ -327,7 +337,6 @@
 .slider-row {
   display: flex; align-items: center; gap: 1.25rem;
   margin-top: 0.75rem;
-  margin-bottom: 1.75rem;
 }
 .end-label {
   flex: 0 0 auto;

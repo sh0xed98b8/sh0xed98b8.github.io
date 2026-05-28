@@ -399,13 +399,7 @@
       type: 'range', min: 0, max: n - 1, step: 1, value: defaultIdx,
       class: 'slider-input', 'aria-label': 'Motion strength',
     });
-    var tickRow = el('div', { class: 'tick-row' });
-    steps.forEach(function (s, i) {
-      var t = el('span', { class: 'tick' }, s.label);
-      t.style.left = 'calc((' + i + ' / ' + (n - 1) + ') * (100% - var(--thumb-size)) + (var(--thumb-size) / 2))';
-      tickRow.appendChild(t);
-    });
-    var trackWrap = el('div', { class: 'slider-track-wrapper' }, [input, tickRow]);
+    var trackWrap = el('div', { class: 'slider-track-wrapper' }, [input]);
     slider.appendChild(el('div', { class: 'slider-row' }, [
       el('span', { class: 'end-label end-label-static' }, 'Static'),
       trackWrap,
