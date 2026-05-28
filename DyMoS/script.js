@@ -306,22 +306,24 @@
     var bPanel = el('div', { class: 'teaser-panel teaser-b' });
     if (c) {
       var bBody = el('div', { class: 'teaser-b-body' });
-      var bSlides = [];
-      var bGroups = [];
+
+      bBody.appendChild(el('div', { class: 'static-dynamic-arrow' }, [
+        el('span', { class: 'sd-static' }, 'Static'),
+        el('div', { class: 'sd-bar' }),
+        el('span', { class: 'sd-dynamic' }, 'Dynamic'),
+      ]));
+
+      var row = el('div', { class: 'teaser-cont-row' });
+      var bGroupId = makeSyncGroup();
       (c.rows || []).forEach(function (r) {
         var block = el('div', { class: 'teaser-cont-block' });
-        var gid = makeSyncGroup();
-        bGroups.push(gid);
         var v = makeVideo(r.file, { autoplay: false, preload: 'auto' });
-        v.dataset.carouselManaged = '1';
-        addToSyncGroup(gid, v);
+        addToSyncGroup(bGroupId, v);
         block.appendChild(el('div', { class: 'video-cell' }, [v]));
         block.appendChild(el('div', { class: 'teaser-cont-label' }, r.label));
-        bSlides.push(block);
+        row.appendChild(block);
       });
-      var bCar = buildCarousel(bSlides, bGroups);
-      bBody.appendChild(bCar.root);
-      bBody.appendChild(bCar.dots);
+      bBody.appendChild(row);
       bBody.appendChild(el('div', { class: 'teaser-prompt' }, c.prompt));
       bPanel.appendChild(bBody);
     }

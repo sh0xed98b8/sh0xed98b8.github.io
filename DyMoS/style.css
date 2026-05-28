@@ -1,7 +1,48 @@
 /* DyMoS component overrides — layered on top of MPD's bulma + index.css */
 
-/* === Teaser layout (panels (a) + (b)) === */
+/* === Teaser === */
 .teaser .hero-body { padding-top: 1rem; padding-bottom: 2rem; }
+
+.teaser-blocks {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.teaser-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.teaser-block-title {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+.teaser-row-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #000;
+}
+.teaser-row-labels {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.teaser-row-labels > span {
+  text-align: center;
+  padding: 0.15rem 0.25rem;
+}
+.teaser-row-labels > .is-ours {
+  color: #f97316;
+  font-weight: 700;
+}
+.teaser-bar { margin-top: 0.25rem; }
 
 .teaser-grid {
   display: grid;
@@ -61,7 +102,7 @@
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
-.row-label-ours { color: var(--primary-color); }
+.row-label-ours { color: #f97316; }
 .row-label-ours span { font-weight: 700; }
 
 .teaser-prompt {
@@ -73,12 +114,39 @@
   line-height: 1.5;
 }
 
+.teaser-cont-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+}
 .teaser-cont-block { display: flex; flex-direction: column; gap: 0.35rem; }
 .teaser-cont-label {
   text-align: center;
   font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
   font-size: 0.82rem; color: var(--text-secondary);
   font-weight: 600;
+}
+
+.static-dynamic-arrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.7rem;
+}
+.sd-static, .sd-dynamic {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+}
+.sd-static  { color: #3b82f6; }
+.sd-dynamic { color: #ef4444; }
+.sd-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #ef4444 100%);
 }
 
 /* === Teaser arrow carousel === */
@@ -171,7 +239,7 @@
   font-size: 0.88rem; font-weight: 600; color: var(--text-secondary);
 }
 .cell-label-ours {
-  color: var(--primary-color);
+  color: #f97316;
   font-weight: 700;
 }
 
