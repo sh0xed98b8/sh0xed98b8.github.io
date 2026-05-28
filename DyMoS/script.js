@@ -355,11 +355,8 @@
         'Dataset: ' + it.dataset + (it.vid ? ' ' + it.vid : ''),
       ]));
       if (it.prompt) {
-        captionChildren.push(el('div', { class: 'cap-line cap-prompt' }, [
-          el('span', { class: 'prompt-label' }, 'Prompt:'),
-          ' ',
-          el('span', { class: 'prompt-text' }, '“' + it.prompt + '”'),
-        ]));
+        captionChildren.push(el('div', { class: 'cap-line cap-prompt' },
+          el('span', { class: 'prompt-text' }, '“' + it.prompt + '”')));
       }
       fig.appendChild(el('figcaption', null, captionChildren));
       container.appendChild(fig);
@@ -389,11 +386,8 @@
 
     var captionChildren = [];
     if (item.prompt) {
-      captionChildren.push(el('div', { class: 'cap-line cap-prompt' }, [
-        el('span', { class: 'prompt-label' }, 'Prompt:'),
-        ' ',
-        el('span', { class: 'prompt-text' }, '“' + item.prompt + '”'),
-      ]));
+      captionChildren.push(el('div', { class: 'cap-line cap-prompt' },
+        el('span', { class: 'prompt-text' }, '“' + item.prompt + '”')));
     }
     if (captionChildren.length) {
       slider.appendChild(el('div', { class: 'slider-caption' }, captionChildren));

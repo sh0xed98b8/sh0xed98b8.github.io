@@ -66,10 +66,11 @@
 
 .teaser-prompt {
   text-align: center;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   font-style: italic;
-  color: var(--text-secondary);
-  margin-top: 0.5rem;
+  color: var(--text-primary);
+  margin-top: 0.6rem;
+  line-height: 1.5;
 }
 
 .teaser-cont-block { display: flex; flex-direction: column; gap: 0.35rem; }
@@ -194,8 +195,12 @@
   gap: 0.4rem;
 }
 .cap-line { line-height: 1.5; }
-.cap-prompt { color: var(--text-secondary); }
-.prompt-label { font-weight: 600; color: var(--text-primary); }
+.cap-prompt {
+  color: var(--text-primary);
+  text-align: center;
+  font-size: 1.05rem;
+  margin-top: 0.4rem;
+}
 .prompt-text { font-style: italic; }
 
 .meta-badges {
