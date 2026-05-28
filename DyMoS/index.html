@@ -6,6 +6,9 @@
   <title>Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models</title>
   <meta name="description" content="DyMoS: Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models" />
   <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,12 +17,12 @@
     <h1 class="title">Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models</h1>
 
     <div class="authors">
-      <div class="author-block"><div class="author-name">Wooseok Jeon<sup>1*</sup></div></div>
-      <div class="author-block"><div class="author-name">Seungho Park<sup>1*</sup></div></div>
-      <div class="author-block"><div class="author-name">Seunghyun Shin<sup>2</sup></div></div>
-      <div class="author-block"><div class="author-name">Sangeyl Lee<sup>1</sup></div></div>
-      <div class="author-block"><div class="author-name">Hyeonho Jeong<sup>3</sup></div></div>
-      <div class="author-block"><div class="author-name">Hae-Gon Jeon<sup>1&dagger;</sup></div></div>
+      <div class="author-block"><div class="author-name"><a href=https://vvsjeon.github.io>Wooseok Jeon</a><sup>1*</sup></div></div>
+      <div class="author-block"><div class="author-name"><a href=https://sh0xed98b8.github.io>Seungho Park</a><sup>1*</sup></div></div>
+      <div class="author-block"><div class="author-name"><a href=https://www.seunghyunshin.com>Seunghyun Shin</a><sup>2</sup></div></div>
+      <div class="author-block"><div class="author-name"><a href=https://scholar.google.com/citations?user=gA4sNvcAAAAJ&hl=ko&oi=ao>Sangeyl Lee</a><sup>1</sup></div></div>
+      <div class="author-block"><div class="author-name"><a href=https://hyeonho99.github.io>Hyeonho Jeong</a><sup>3</sup></div></div>
+      <div class="author-block"><div class="author-name"><a href=https://sites.google.com/site/hgjeoncv/home>Hae-Gon Jeon</a><sup>1</sup></div></div>
     </div>
 
     <div class="affiliations">
@@ -29,7 +32,7 @@
     </div>
 
     <div class="author-notes">
-      <sup>*</sup>Equal contribution &nbsp;&nbsp; <sup>&dagger;</sup>Corresponding author
+      <sup>*</sup>Equal contribution. &nbsp;&nbsp
     </div>
 
     <div class="links">
@@ -49,31 +52,77 @@
 
   </header>
 
+  <section id="teaser-section" class="wide">
+    <div id="teaser-container"></div>
+  </section>
+
   <main class="content">
 
-    <section id="teaser-section" class="wide">
-      <div id="teaser-container"></div>
+    <!-- Abstract -->
+    <section class="abstract section-card">
+      <h2>Overview</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3 class="card-title">Problem</h3>
+          <p>
+            Image-to-video (I2V) models often generate videos that remain overly
+            static, compared to text-to-video (T2V) models. While prior approaches
+            mitigate this issue by weakening or modifying the image-conditioning
+            signal, they often require additional training or sacrifice fidelity
+            to the reference image.
+          </p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Our approach</h3>
+          <p>
+            We identify <em class="term">reference-frame dominance</em> in
+            self-attention — the tendency of non-reference frames to over-attend
+            to the reference frame — as the mechanism behind motion suppression.
+            We propose <strong>DyMoS</strong> (Dynamic Motion Slider), a
+            training-free and model-agnostic method that rebalances the attention
+            pathway from generated frames to the reference frame during the
+            initial denoising steps.
+          </p>
+        </div>
+      </div>
+
+      <div class="bullets-row">
+        <div class="bullet"><span class="bullet-check">&#10003;</span> <b>Training-free</b> — no model parameters touched</div>
+        <div class="bullet"><span class="bullet-check">&#10003;</span> <b>Model-agnostic</b> — applies to off-the-shelf I2V backbones</div>
+        <div class="bullet"><span class="bullet-check">&#10003;</span> <b>Continuous control</b> — a single scalar slides motion strength</div>
+      </div>
     </section>
 
-    <section id="dynamic-section">
-      <h2>Dynamic — Qualitative Comparison</h2>
-      <p>
+    <section id="dynamic-section" class="section-card">
+      <h2>Baseline Comparisons</h2>
+      <p class="section-lead">
         For each example we compare <strong>Base</strong>, <strong>ALG</strong>,
-        and <strong>Ours</strong> on the same image condition. Each sub-section
-        corresponds to a figure in the paper.
+        and <strong>Ours</strong> on the same image condition.
       </p>
       <div id="dynamic-container"></div>
     </section>
 
-    <section id="continuous-section">
-      <h2>Continuous Control</h2>
-      <p>
-        Drag the slider to vary the guidance setting <em>g</em>. The video
-        restarts from the beginning each time you change the value, so every
-        clip plays in full. Each sub-section corresponds to a figure in the
-        paper.
+    <section id="continuous-section" class="section-card">
+      <h2>Applications: Continuous Control over motion dynamics</h2>
+      <p class="section-lead">
+        Drag the slider to vary the guidance setting.
       </p>
       <div id="continuous-container"></div>
+    </section>
+
+    <section id="bibtex-section" class="section-card">
+      <div class="bibtex-header">
+        <h2>BibTeX</h2>
+        <button class="copy-bibtex-btn" type="button" id="copy-bibtex-btn" title="Copy BibTeX to clipboard">
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+@article{jeon2026rebalancing,
+  title={Rebalancing Reference Frame Dominance to Improve Motion in Image-to-Video Models},
+  author={Jeon, Wooseok and Park, Seungho and Shin, Seunghyun and Lee, Sangeyl and Jeong, Hyeonho and Jeon, Hae-Gon},
+  journal={arXiv preprint arXiv:2605.19398},
+  year={2026}
+}
     </section>
 
   </main>

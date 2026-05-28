@@ -138,7 +138,125 @@
   }
   function observeAllVideos(root) {
     if (!io) return;
-    root.querySelectorAll('video').forEach(function (v) { io.observe(v); });
+    root.querySelectorAll('video').forEach(function (v) {
+      if (v.dataset.carouselManaged === '1') return;
+      io.observe(v);
+    });
+  }
+
+  function buildCarousel(slides, slideGroups, opts) {
+    opts = opts || {};
+    var carousel = document.createElement('div');
+    carousel.className = 'teaser-carousel';
+
+    var track = document.createElement('div');
+    track.className = 'teaser-carousel-track';
+    slides.forEach(function (s) {
+      s.classList.add('teaser-slide');
+      track.appendChild(s);
+    });
+    carousel.appendChild(track);
+
+    var prevBtn = el('button', {
+      class: 'carousel-arrow carousel-arrow-prev',
+      type: 'button',
+      'aria-label': 'Previous',
+    }, '‹');
+    var nextBtn = el('button', {
+      class: 'carousel-arrow carousel-arrow-next',
+      type: 'button',
+      'aria-label': 'Next',
+    }, '›');
+    carousel.appendChild(prevBtn);
+    carousel.appendChild(nextBtn);
+
+    var dots = el('div', { class: 'carousel-dots' });
+    slides.forEach(function (_, i) {
+      var d = el('button', {
+        class: 'carousel-dot',
+        type: 'button',
+        'aria-label': 'Slide ' + (i + 1),
+      });
+      d.dataset.idx = String(i);
+      dots.appendChild(d);
+    });
+
+    var currentIdx = 0;
+    var carouselVisible = false;
+
+    function updateUI() {
+      track.style.transform = 'translateX(-' + (currentIdx * 100) + '%)';
+      slides.forEach(function (s, i) {
+        s.classList.toggle('is-active', i === currentIdx);
+      });
+      Array.prototype.forEach.call(dots.children, function (d, i) {
+        d.classList.toggle('is-active', i === currentIdx);
+      });
+    }
+
+    function setActive(newIdx) {
+      if (newIdx < 0) newIdx = slides.length - 1;
+      if (newIdx >= slides.length) newIdx = 0;
+      if (newIdx === currentIdx) return;
+      var oldG = syncGroups[slideGroups[currentIdx]];
+      if (oldG) {
+        pauseSyncGroup(oldG);
+        oldG.intersectingCount = 0;
+        oldG.videos.forEach(function (v) { try { v.currentTime = 0; } catch (_) {} });
+      }
+      currentIdx = newIdx;
+      updateUI();
+      var newG = syncGroups[slideGroups[currentIdx]];
+      if (newG && carouselVisible) {
+        newG.intersectingCount = newG.videos.length;
+        newG.videos.forEach(function (v) { try { v.currentTime = 0; } catch (_) {} });
+        tryPlaySyncGroup(newG);
+      }
+    }
+
+    prevBtn.addEventListener('click', function () { setActive(currentIdx - 1); });
+    nextBtn.addEventListener('click', function () { setActive(currentIdx + 1); });
+    dots.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('.carousel-dot');
+      if (!t) return;
+      setActive(parseInt(t.dataset.idx, 10));
+    });
+
+    if ('IntersectionObserver' in window) {
+      var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting === carouselVisible) return;
+          carouselVisible = e.isIntersecting;
+          var g = syncGroups[slideGroups[currentIdx]];
+          if (!g) return;
+          if (carouselVisible) {
+            g.intersectingCount = g.videos.length;
+            tryPlaySyncGroup(g);
+          } else {
+            g.intersectingCount = 0;
+            pauseSyncGroup(g);
+          }
+        });
+      }, { rootMargin: '200px 0px', threshold: 0.05 });
+      cio.observe(carousel);
+    } else {
+      carouselVisible = true;
+      var g0 = syncGroups[slideGroups[0]];
+      if (g0) {
+        g0.intersectingCount = g0.videos.length;
+        tryPlaySyncGroup(g0);
+      }
+    }
+
+    updateUI();
+
+    if (slides.length <= 1) {
+      prevBtn.style.display = 'none';
+      nextBtn.style.display = 'none';
+      dots.style.display = 'none';
+    }
+
+    return { root: carousel, dots: dots };
   }
 
   function renderTeaser(container, t) {
@@ -147,28 +265,39 @@
 
     var aPanel = el('div', { class: 'teaser-panel teaser-a' });
     var aBody = el('div', { class: 'teaser-a-body' });
+    var aSlides = [];
+    var aGroups = [];
     (t.dynamic || []).forEach(function (item) {
       var block = el('div', { class: 'teaser-dyn-block' });
       var rows = el('div', { class: 'teaser-dyn-rows' });
       var aGroupId = makeSyncGroup();
+      aGroups.push(aGroupId);
+
       var vBase = makeVideo(item.files.baseline, { autoplay: false, preload: 'auto' });
+      vBase.dataset.carouselManaged = '1';
       addToSyncGroup(aGroupId, vBase);
       rows.appendChild(el('div', { class: 'teaser-row' }, [
         el('div', { class: 'row-label row-label-vertical' },
            el('span', null, item.model)),
         el('div', { class: 'video-cell' }, [vBase]),
       ]));
+
       var vOurs = makeVideo(item.files.ours, { autoplay: false, preload: 'auto' });
+      vOurs.dataset.carouselManaged = '1';
       addToSyncGroup(aGroupId, vOurs);
       rows.appendChild(el('div', { class: 'teaser-row' }, [
         el('div', { class: 'row-label row-label-vertical row-label-ours' },
            el('span', null, 'Ours')),
         el('div', { class: 'video-cell' }, [vOurs]),
       ]));
+
       block.appendChild(rows);
       block.appendChild(el('div', { class: 'teaser-prompt' }, item.prompt));
-      aBody.appendChild(block);
+      aSlides.push(block);
     });
+    var aCar = buildCarousel(aSlides, aGroups);
+    aBody.appendChild(aCar.root);
+    aBody.appendChild(aCar.dots);
     aPanel.appendChild(aBody);
     aPanel.appendChild(el('div', { class: 'panel-caption' }, '(a) Dynamic image-to-video generation'));
     wrap.appendChild(aPanel);
@@ -177,30 +306,22 @@
     var bPanel = el('div', { class: 'teaser-panel teaser-b' });
     if (c) {
       var bBody = el('div', { class: 'teaser-b-body' });
-      var inner = el('div', { class: 'teaser-cont-inner' });
-
-      var axis = el('div', { class: 'teaser-axis' }, [
-        el('div', { class: 'axis-end axis-static' }, [
-          el('div', { class: 'axis-arrow axis-arrow-up' }),
-          el('div', { class: 'axis-text' }, el('span', null, 'Static')),
-        ]),
-        el('div', { class: 'axis-bar' }),
-        el('div', { class: 'axis-end axis-dynamic' }, [
-          el('div', { class: 'axis-text' }, el('span', null, 'Dynamic')),
-          el('div', { class: 'axis-arrow axis-arrow-down' }),
-        ]),
-      ]);
-      inner.appendChild(axis);
-
-      var rows = el('div', { class: 'teaser-cont-rows' });
-      var bGroupId = makeSyncGroup();
+      var bSlides = [];
+      var bGroups = [];
       (c.rows || []).forEach(function (r) {
+        var block = el('div', { class: 'teaser-cont-block' });
+        var gid = makeSyncGroup();
+        bGroups.push(gid);
         var v = makeVideo(r.file, { autoplay: false, preload: 'auto' });
-        addToSyncGroup(bGroupId, v);
-        rows.appendChild(el('div', { class: 'video-cell' }, [v]));
+        v.dataset.carouselManaged = '1';
+        addToSyncGroup(gid, v);
+        block.appendChild(el('div', { class: 'video-cell' }, [v]));
+        block.appendChild(el('div', { class: 'teaser-cont-label' }, r.label));
+        bSlides.push(block);
       });
-      inner.appendChild(rows);
-      bBody.appendChild(inner);
+      var bCar = buildCarousel(bSlides, bGroups);
+      bBody.appendChild(bCar.root);
+      bBody.appendChild(bCar.dots);
       bBody.appendChild(el('div', { class: 'teaser-prompt' }, c.prompt));
       bPanel.appendChild(bBody);
     }
@@ -211,59 +332,42 @@
   }
 
   function renderDynamic(container, items) {
-    var groups = []; var seen = {};
     items.forEach(function (it) {
-      if (!seen[it.figure]) { seen[it.figure] = { figure: it.figure, items: [] }; groups.push(seen[it.figure]); }
-      seen[it.figure].items.push(it);
-    });
-
-    groups.forEach(function (g) {
-      container.appendChild(el('h3', { class: 'group-title' }, g.figure));
-      g.items.forEach(function (it) {
-        var fig = el('figure', { class: 'method-compare' });
-        var grid = el('div', { class: 'grid grid-3' });
-        var groupId = makeSyncGroup();
-        ['base', 'alg', 'ours'].forEach(function (k) {
-          var label = k === 'base' ? 'Base' : k === 'alg' ? 'ALG' : 'Ours';
-          var v = makeVideo(it.files[k], { autoplay: false, preload: 'auto' });
-          addToSyncGroup(groupId, v);
-          var col = el('div', { class: 'compare-col' }, [
-            el('div', { class: 'video-cell' }, [v]),
-            el('div', { class: 'cell-label' }, label),
-          ]);
-          grid.appendChild(col);
-        });
-        fig.appendChild(grid);
-
-        var captionChildren = [];
-        captionChildren.push(el('div', { class: 'cap-line cap-title' }, it.label));
-        captionChildren.push(metaBadges([
-          'Model: ' + it.model,
-          'Dataset: ' + it.dataset + (it.vid ? ' ' + it.vid : ''),
-        ]));
-        if (it.prompt) {
-          captionChildren.push(el('div', { class: 'cap-line cap-prompt' }, [
-            el('span', { class: 'prompt-label' }, 'Prompt:'),
-            ' ',
-            el('span', { class: 'prompt-text' }, '“' + it.prompt + '”'),
-          ]));
-        }
-        fig.appendChild(el('figcaption', null, captionChildren));
-        container.appendChild(fig);
+      var fig = el('figure', { class: 'method-compare' });
+      var grid = el('div', { class: 'grid grid-3' });
+      var groupId = makeSyncGroup();
+      ['base', 'alg', 'ours'].forEach(function (k) {
+        var label = k === 'base' ? 'Base' : k === 'alg' ? 'ALG' : 'Ours';
+        var v = makeVideo(it.files[k], { autoplay: false, preload: 'auto' });
+        addToSyncGroup(groupId, v);
+        var col = el('div', { class: 'compare-col' }, [
+          el('div', { class: 'video-cell' }, [v]),
+          el('div', { class: 'cell-label' }, label),
+        ]);
+        grid.appendChild(col);
       });
+      fig.appendChild(grid);
+
+      var captionChildren = [];
+      captionChildren.push(el('div', { class: 'cap-line cap-title' }, it.label));
+      captionChildren.push(metaBadges([
+        'Model: ' + it.model,
+        'Dataset: ' + it.dataset + (it.vid ? ' ' + it.vid : ''),
+      ]));
+      if (it.prompt) {
+        captionChildren.push(el('div', { class: 'cap-line cap-prompt' }, [
+          el('span', { class: 'prompt-label' }, 'Prompt:'),
+          ' ',
+          el('span', { class: 'prompt-text' }, '“' + it.prompt + '”'),
+        ]));
+      }
+      fig.appendChild(el('figcaption', null, captionChildren));
+      container.appendChild(fig);
     });
   }
 
   function renderContinuous(container, items) {
-    var groups = []; var seen = {};
-    items.forEach(function (it) {
-      if (!seen[it.figure]) { seen[it.figure] = { figure: it.figure, items: [] }; groups.push(seen[it.figure]); }
-      seen[it.figure].items.push(it);
-    });
-    groups.forEach(function (g) {
-      container.appendChild(el('h3', { class: 'group-title' }, g.figure));
-      g.items.forEach(function (it) { container.appendChild(buildSlider(it)); });
-    });
+    items.forEach(function (it) { container.appendChild(buildSlider(it)); });
   }
 
   function buildSlider(item) {
@@ -359,6 +463,37 @@
 
     initObserver();
     observeAllVideos(document);
+
+    var copyBtn = document.getElementById('copy-bibtex-btn');
+    var bibCode = document.getElementById('bibtex-code');
+    if (copyBtn && bibCode) {
+      copyBtn.addEventListener('click', function () {
+        var text = bibCode.innerText;
+        var done = function () {
+          var label = copyBtn.querySelector('.copy-text');
+          if (!label) return;
+          var prev = label.textContent;
+          label.textContent = 'Copied';
+          copyBtn.classList.add('is-copied');
+          setTimeout(function () {
+            label.textContent = prev;
+            copyBtn.classList.remove('is-copied');
+          }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () {});
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); done(); } catch (_) {}
+          document.body.removeChild(ta);
+        }
+      });
+    }
 
     var n = document.querySelectorAll('video').length;
     if (n === 0) diag('No <video> elements rendered. Check data.js content.');
